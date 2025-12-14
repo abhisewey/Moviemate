@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../api/api";
 
-function AddItem({ addItem }) {
+function AddItem() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -9,20 +10,40 @@ function AddItem({ addItem }) {
     type: "movie",
     director: "",
     genre: "",
-    platform: "",
-    status: "wishlist",
+    platform: "netflix",
+    status: "watching",
     total_episodes: "",
+    episodes_watched: "",
+    rating: "",
+    review: "",
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addItem(formData);
-    navigate("/");
+
+    const payload = {
+      ...formData,
+      total_episodes:
+        formData.total_episodes === "" ? null : Number(formData.total_episodes),
+      episodes_watched:
+        formData.episodes_watched === ""
+          ? null
+          : Number(formData.episodes_watched),
+      rating: formData.rating === "" ? null : Number(formData.rating),
+    };
+
+    API.post("items/", payload)
+      .then(() => navigate("/"))
+      .catch((err) => {
+        console.error("ERROR DATA:", err.response?.data);
+      });
   };
 
   return (
@@ -30,89 +51,74 @@ function AddItem({ addItem }) {
       <h2>Add Movie / TV Show</h2>
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title *</label>
-          <br />
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <input
+          name="title"
+          placeholder="Title"
+          required
+          onChange={handleChange}
+        />
 
-        <div>
-          <label>Type *</label>
-          <br />
-          <select name="type" value={formData.type} onChange={handleChange}>
-            <option value="movie">Movie</option>
-            <option value="tv">TV Show</option>
-          </select>
-        </div>
+        <select name="type" value={formData.type} onChange={handleChange}>
+          <option value="movie">Movie</option>
+          <option value="tv">TV Show</option>
+        </select>
 
-        <div>
-          <label>Director</label>
-          <br />
-          <input
-            type="text"
-            name="director"
-            value={formData.director}
-            onChange={handleChange}
-          />
-        </div>
+        <input name="director" placeholder="Director" onChange={handleChange} />
+        <input name="genre" placeholder="Genre" onChange={handleChange} />
 
-        <div>
-          <label>Genre</label>
-          <br />
-          <input
-            type="text"
-            name="genre"
-            value={formData.genre}
-            onChange={handleChange}
-          />
-        </div>
+        {/* Platform dropdown */}
+        <select
+          name="platform"
+          value={formData.platform}
+          onChange={handleChange}
+        >
+          <option value="netflix">Netflix</option>
+          <option value="prime">Amazon Prime</option>
+          <option value="hotstar">Disney+ Hotstar</option>
+        </select>
 
-        <div>
-          <label>Platform</label>
-          <br />
-          <input
-            type="text"
-            name="platform"
-            value={formData.platform}
-            onChange={handleChange}
-          />
-        </div>
+        <select name="status" value={formData.status} onChange={handleChange}>
+          <option value="watching">Watching</option>
+          <option value="completed">Completed</option>
+          <option value="wishlist">Wishlist</option>
+        </select>
 
-        <div>
-          <label>Status</label>
-          <br />
-          <select name="status" value={formData.status} onChange={handleChange}>
-            <option value="watching">Watching</option>
-            <option value="completed">Completed</option>
-            <option value="wishlist">Wishlist</option>
-          </select>
-        </div>
-
-        {/* TV-only field */}
-        {formData.type === "tv" && (
-          <div>
-            <label>Total Episodes</label>
-            <br />
+        {/* ✅ Show progress ONLY if TV + Watching */}
+        {formData.type === "tv" && formData.status === "watching" && (
+          <>
             <input
               type="number"
               name="total_episodes"
-              value={formData.total_episodes}
+              placeholder="Total Episodes"
               onChange={handleChange}
-              min="1"
             />
-          </div>
+            <input
+              type="number"
+              name="episodes_watched"
+              placeholder="Episodes Watched"
+              onChange={handleChange}
+            />
+          </>
         )}
 
-        <br />
-        <button type="submit" disabled={!formData.title}>
-          Add Item
-        </button>
+        {/* ✅ Rating (out of 5) */}
+        <input
+          type="number"
+          name="rating"
+          min="1"
+          max="5"
+          placeholder="Rating (1–5)"
+          onChange={handleChange}
+        />
+
+        {/* ✅ Review */}
+        <textarea
+          name="review"
+          placeholder="Write your review"
+          onChange={handleChange}
+        />
+
+        <button type="submit">Add Item</button>
       </form>
     </div>
   );

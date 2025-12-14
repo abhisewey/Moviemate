@@ -1,6 +1,18 @@
 import ProgressBar from "./ProgressBar";
+import API from "../api/api";
 
-function ItemCard({ item }) {
+function ItemCard({ item, onDelete }) {
+
+  const handleDelete = () => {
+    API.delete(`items/${item.id}/`)
+      .then(() => {
+        onDelete(item.id);
+      })
+      .catch((err) => {
+        console.error("Delete failed", err);
+      });
+  };
+
   return (
     <div
       style={{
@@ -18,7 +30,6 @@ function ItemCard({ item }) {
       <p><strong>Platform:</strong> {item.platform}</p>
       <p><strong>Status:</strong> {item.status}</p>
 
-      {/* TV Show Progress */}
       {item.type === "tv" && (
         <ProgressBar
           watched={item.episodes_watched}
@@ -26,14 +37,18 @@ function ItemCard({ item }) {
         />
       )}
 
-      {/* Rating */}
       {item.rating && (
         <p><strong>Rating:</strong> {item.rating} / 5</p>
       )}
 
       <div style={{ marginTop: "10px" }}>
         <button>Edit</button>
-        <button style={{ marginLeft: "10px" }}>Delete</button>
+        <button
+          style={{ marginLeft: "10px" }}
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
