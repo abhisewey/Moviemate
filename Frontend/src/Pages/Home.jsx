@@ -1,31 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/api";
-import './Home.css'
-
-function ProgressBar({ watched, total }) {
-  const percentage = Math.round((watched / total) * 100);
-
-  return (
-    <div className="progress-wrapper">
-      <div className="progress-info">
-        <span className="progress-text">Episodes Progress</span>
-        <span className="progress-numbers">
-          {watched} / {total}
-        </span>
-      </div>
-      <div className="progress-container">
-        <div
-          className="progress-fill"
-          style={{ width: `${percentage}%` }}
-        >
-          <div className="progress-glow"></div>
-        </div>
-      </div>
-      <span className="progress-percentage">{percentage}%</span>
-    </div>
-  );
-}
+import "./Home.css";
+import ProgressBar from "../components/ProgressBar";
 
 function EditModal({ item, onClose, onUpdate }) {
   const [formData, setFormData] = useState({
@@ -52,8 +29,14 @@ function EditModal({ item, onClose, onUpdate }) {
     try {
       const payload = {
         ...formData,
-        total_episodes: formData.total_episodes === "" ? null : Number(formData.total_episodes),
-        episodes_watched: formData.episodes_watched === "" ? null : Number(formData.episodes_watched),
+        total_episodes:
+          formData.total_episodes === ""
+            ? null
+            : Number(formData.total_episodes),
+        episodes_watched:
+          formData.episodes_watched === ""
+            ? null
+            : Number(formData.episodes_watched),
         rating: formData.rating === "" ? null : Number(formData.rating),
       };
       await API.put(`items/${item.id}/`, payload);
@@ -74,7 +57,12 @@ function EditModal({ item, onClose, onUpdate }) {
         <div className="modal-header">
           <h2>Edit Item</h2>
           <button className="close-btn" onClick={onClose}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
@@ -117,7 +105,11 @@ function EditModal({ item, onClose, onUpdate }) {
             </div>
             <div className="form-group">
               <label>Platform</label>
-              <select name="platform" value={formData.platform} onChange={handleChange}>
+              <select
+                name="platform"
+                value={formData.platform}
+                onChange={handleChange}
+              >
                 <option value="netflix">Netflix</option>
                 <option value="prime">Amazon Prime</option>
                 <option value="hotstar">Disney+ Hotstar</option>
@@ -182,14 +174,14 @@ function EditModal({ item, onClose, onUpdate }) {
             />
           </div>
           <div className="modal-actions">
-            <button
-              className="btn-cancel"
-              onClick={onClose}
-              disabled={loading}
-            >
+            <button className="btn-cancel" onClick={onClose} disabled={loading}>
               Cancel
             </button>
-            <button className="btn-save" onClick={handleSubmit} disabled={loading}>
+            <button
+              className="btn-save"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
               {loading ? (
                 <span className="loading-spinner"></span>
               ) : (
@@ -251,7 +243,7 @@ function Home() {
     if (!window.confirm("Are you sure you want to delete this item?")) {
       return;
     }
-    
+
     try {
       await API.delete(`items/${id}/`);
       fetchItems();
@@ -269,7 +261,12 @@ function Home() {
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
         stars.push(
-          <svg key={i} className="star star-filled" viewBox="0 0 24 24" fill="currentColor">
+          <svg
+            key={i}
+            className="star star-filled"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         );
@@ -282,13 +279,27 @@ function Home() {
                 <stop offset="50%" stopColor="transparent" />
               </linearGradient>
             </defs>
-            <path fill={`url(#half-${i})`} d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            <path fill="none" stroke="currentColor" strokeWidth="1" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            <path
+              fill={`url(#half-${i})`}
+              d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            />
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            />
           </svg>
         );
       } else {
         stars.push(
-          <svg key={i} className="star star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <svg
+            key={i}
+            className="star star-empty"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         );
@@ -309,7 +320,7 @@ function Home() {
   return (
     <div className="home-container">
       <div className="hero-gradient"></div>
-      
+
       <header className="header">
         <div className="header-content">
           <h1 className="logo">
@@ -326,16 +337,20 @@ function Home() {
             { value: "all", label: "All" },
             { value: "watching", label: "Watching" },
             { value: "completed", label: "Completed" },
-            { value: "wishlist", label: "Wishlist" }
+            { value: "wishlist", label: "Wishlist" },
           ].map((filter) => (
             <button
               key={filter.value}
-              className={`filter-btn ${activeFilter === filter.value ? "active" : ""}`}
+              className={`filter-btn ${
+                activeFilter === filter.value ? "active" : ""
+              }`}
               onClick={() => setActiveFilter(filter.value)}
             >
               <span className="filter-btn-bg"></span>
               <span className="filter-btn-text">{filter.label}</span>
-              {activeFilter === filter.value && <span className="filter-btn-indicator"></span>}
+              {activeFilter === filter.value && (
+                <span className="filter-btn-indicator"></span>
+              )}
             </button>
           ))}
         </div>
@@ -353,8 +368,8 @@ function Home() {
           </div>
         ) : (
           filteredItems.map((item, index) => (
-            <div 
-              key={item.id} 
+            <div
+              key={item.id}
               className="item-card"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
@@ -365,10 +380,13 @@ function Home() {
                   <div className="card-title-section">
                     <h3 className="item-title">{item.title}</h3>
                     <span className={`type-badge ${item.type.toLowerCase()}`}>
-                      {item.type === "movie" ? "🎬" : "📺"} {item.type === "movie" ? "Movie" : "TV Show"}
+                      {item.type === "movie" ? "🎬" : "📺"}{" "}
+                      {item.type === "movie" ? "Movie" : "TV Show"}
                     </span>
                   </div>
-                  <span className={`status-badge status-${item.status.toLowerCase()}`}>
+                  <span
+                    className={`status-badge status-${item.status.toLowerCase()}`}
+                  >
                     {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                   </span>
                 </div>
@@ -377,7 +395,13 @@ function Home() {
                   <div className="meta-grid">
                     {item.director && (
                       <div className="meta-item">
-                        <svg className="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg
+                          className="meta-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                           <circle cx="12" cy="7" r="4" />
                         </svg>
@@ -386,7 +410,13 @@ function Home() {
                     )}
                     {item.genre && (
                       <div className="meta-item">
-                        <svg className="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg
+                          className="meta-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
                           <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
                           <line x1="4" y1="22" x2="4" y2="15" />
                         </svg>
@@ -395,11 +425,27 @@ function Home() {
                     )}
                     {item.platform && (
                       <div className="meta-item">
-                        <svg className="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
+                        <svg
+                          className="meta-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <rect
+                            x="2"
+                            y="7"
+                            width="20"
+                            height="15"
+                            rx="2"
+                            ry="2"
+                          />
                           <polyline points="17 2 12 7 7 2" />
                         </svg>
-                        <span>{item.platform.charAt(0).toUpperCase() + item.platform.slice(1)}</span>
+                        <span>
+                          {item.platform.charAt(0).toUpperCase() +
+                            item.platform.slice(1)}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -407,7 +453,9 @@ function Home() {
                   {item.rating && (
                     <div className="rating-section">
                       <div className="stars">{renderStars(item.rating)}</div>
-                      <span className="rating-value">{Number(item.rating).toFixed(1)}</span>
+                      <span className="rating-value">
+                        {Number(item.rating).toFixed(1)}
+                      </span>
                     </div>
                   )}
 
@@ -419,11 +467,12 @@ function Home() {
 
                   {item.type === "tv" &&
                     item.status === "watching" &&
-                    item.total_episodes &&
-                    item.episodes_watched !== null && (
+                    item.episodes_watched != null &&
+                    item.total_episodes != null &&
+                    item.total_episodes > 0 && (
                       <div className="progress-section">
                         <ProgressBar
-                          watched={item.episodes_watched}
+                          watched={item.episodes_watched || 0}
                           total={item.total_episodes}
                         />
                       </div>
@@ -432,15 +481,31 @@ function Home() {
 
                 <div className="card-footer">
                   <div className="card-footer-actions">
-                    <button className="btn-edit" onClick={() => handleEdit(item)}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <button
+                      className="btn-edit"
+                      onClick={() => handleEdit(item)}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                       </svg>
                       <span>Edit</span>
                     </button>
-                    <button className="btn-delete" onClick={() => handleDelete(item.id)}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
                         <polyline points="3 6 5 6 21 6"></polyline>
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                         <line x1="10" y1="11" x2="10" y2="17"></line>
