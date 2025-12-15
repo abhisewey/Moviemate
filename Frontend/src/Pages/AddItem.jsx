@@ -20,22 +20,33 @@ function AddItem() {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
 
-    setFormData((prev) => {
-      let newData = { ...prev, [name]: value };
+  setFormData((prev) => {
+    let newValue = value;
 
-      // Automatically clear episode fields when they become irrelevant
-      if (name === "type" || name === "status") {
-        if (newData.type !== "tv" || newData.status !== "watching") {
-          newData.total_episodes = "";
-          newData.episodes_watched = "";
-        }
+    // Convert numeric fields properly
+    if (["rating", "total_episodes", "episodes_watched"].includes(name)) {
+      newValue = value === "" ? "" : Number(value);
+    }
+
+    let newData = {
+      ...prev,
+      [name]: newValue,
+    };
+
+    // Clear episode fields when they become irrelevant
+    if (name === "type" || name === "status") {
+      if (newData.type !== "tv" || newData.status !== "watching") {
+        newData.total_episodes = "";
+        newData.episodes_watched = "";
       }
+    }
 
-      return newData;
-    });
-  };
+    return newData;
+  });
+};
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

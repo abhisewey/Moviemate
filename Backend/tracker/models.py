@@ -14,7 +14,7 @@ class Item(models.Model):
 
     title = models.CharField(max_length=200)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
-    director = models.CharField(max_length=200, blank=True)
+    director = models.CharField(max_length=100, blank=True)
     genre = models.CharField(max_length=100)
     platform = models.CharField(max_length=100)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
@@ -22,7 +22,12 @@ class Item(models.Model):
     total_episodes = models.IntegerField(null=True, blank=True)
     episodes_watched = models.IntegerField(default=0)
 
-    rating = models.IntegerField(null=True, blank=True)
+    rating = models.DecimalField(
+    max_digits=3,
+    decimal_places=1,
+    null=True,
+    blank=True
+                                )
     review = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

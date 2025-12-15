@@ -132,13 +132,16 @@ function Home() {
       <div className="hero-gradient"></div>
 
       <header className="header">
-        <div className="header-content">
+        {/* Left side: Logo + Tagline */}
+        <div className="header-left">
           <h1 className="logo">
             <span className="logo-icon">🎬</span>
             MovieMate
           </h1>
           <div className="header-tagline">Your Personal Cinema Companion</div>
         </div>
+
+        {/* Right side: AI Suggestions Button */}
         <button
           className="ai-suggestions-btn"
           onClick={() => navigate("/suggestions")}
