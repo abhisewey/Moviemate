@@ -1,176 +1,144 @@
-🎬 MovieMate – Full Stack Movie & TV Tracking Application
-📌 Overview
+# 🎬 MovieMate – Full Stack Movie & TV Tracking Application
 
-MovieMate is a full-stack web application that helps users track movies and TV shows they watch, rate them, write reviews, monitor episode progress, and receive smart recommendations based on viewing behavior.
+## 📌 Overview
 
-The project focuses on:
+**MovieMate** is a full-stack web application designed to help users track movies and TV shows, rate them, write reviews, monitor episode progress, and receive smart, personalized recommendations based on their viewing habits.
 
-Clean frontend UI with smooth UX
+This project emphasizes:
+- Clean, modern frontend with excellent user experience
+- Robust REST API backend
+- Practical, transparent recommendation logic (AI-inspired but rule-based)
+- Real-world CRUD operations, filtering, and state management
 
-REST-based backend architecture
+Perfect for showcasing full-stack development skills!
 
-Practical recommendation logic (AI-inspired, not ML-heavy)
+---
 
-Real-world CRUD operations and filtering
+## 🚀 Features
 
-This project demonstrates full-stack ownership — from database design to frontend interaction.
+### ✅ Core Features
+- **Add, edit, and delete** movies & TV shows
+- Separate logic for **Movies** and **TV Shows**
+- Track key details:
+  - Title, Director, Genre
+  - Streaming Platform (Netflix, Prime, Hotstar, etc.)
+  - **Status**: Wishlist • Watching • Completed
+  - **Rating** (1–5 with decimal support, e.g., 4.7)
+  - **Personal Review**
 
-🚀 Features
-✅ Core Features
+### 📺 TV Show Progress Tracking
+- Track **total episodes** and **episodes watched**
+- Visual **progress bar** with smooth animation
+- Automatically shown **only** for TV shows in **Watching** status
 
-Add, edit, and delete movies & TV shows
+### 🔍 Filtering
+- Filter your collection by status:
+  - All
+  - Watching
+  - Completed
+  - Wishlist
+- Real-time updates with no page reload
 
-Separate handling for Movies and TV Shows
+### 🤖 AI-Inspired Recommendations
+- Smart suggestions based on:
+  - Your **completed** items
+  - **Highest-rated genres**
+- Recommends **unwatched** titles from your favorite genre
+- **Note**: This is **rule-based logic** (not machine learning) — fast, transparent, and reliable
 
-Status tracking:
+### 🎨 UI / UX Highlights
+- Modern dark-themed cinematic design
+- Card-based layout with hover effects and shine animation
+- Modal editing with blur backdrop
+- Floating Action Button (FAB) for quick add
+- Fully responsive (mobile-friendly)
+- Status & type badges with color coding
 
-Wishlist
+---
 
-Watching
+## 🛠️ Tech Stack
 
-Completed
+### Frontend
+- **React.js** (with Vite for fast development)
+- **React Router** for navigation
+- **Axios** for API communication
+- Pure **CSS** (custom styling – no heavy frameworks)
 
-Rating system (out of 5, supports decimals)
+### Backend
+- **Django**
+- **Django REST Framework**
+- **SQLite** (default for development)
 
-Review system for watched content
+### Recommendation Engine
+- Custom rule-based logic (genre + rating analysis)
+- Fully backend-driven for performance
 
-Platform tracking (Netflix, Prime, Hotstar, etc.)
+---
 
-Genre and director metadata
+## ⚙️ Setup Instructions
 
-📺 TV Show Progress Tracking
+### 1️⃣ Backend Setup
 
-Episode-based progress tracking for TV shows
-
-Episodes watched vs total episodes
-
-Visual progress bar for currently watching TV shows
-
-Automatically hidden for movies or completed items
-
-🔍 Filtering & Sorting
-
-Filter items by:
-
-Status (Watching / Completed / Wishlist)
-
-Clean separation of frontend filtering logic
-
-Real-time UI updates without page refresh
-
-🤖 AI-Inspired Recommendations
-
-Smart recommendations based on:
-
-User ratings
-
-Most liked genre
-
-Backend logic analyzes completed & rated items
-
-Suggests unwatched items from preferred genres
-
-⚠️ Note:
-This is logic-based recommendation, not ML.
-The goal is transparency, performance, and correctness.
-
-🎨 UI / UX
-
-Modern card-based UI
-
-Modal-based editing (blurred background)
-
-Floating action button for adding items
-
-Responsive layout
-
-Visual badges for status and content type
-
-🛠️ Tech Stack
-Frontend
-
-React.js
-
-React Router
-
-Axios (API handling)
-
-CSS (custom styling)
-
-Backend
-
-Django
-
-Django REST Framework
-
-SQLite (development database)
-
-Recommendation Logic
-
-Rule-based genre + rating analysis
-
-Backend-driven suggestions
-
-⚙️ Setup Instructions
-1️⃣ Backend Setup
+```bash
 cd backend
 python -m venv venv
+
+# Activate virtual environment
+# Windows
 venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
+
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
-
-
-Backend runs at:
-👉 http://127.0.0.1:8000
-
+Backend URL: http://127.0.0.1:8000
 2️⃣ Frontend Setup
-cd frontend
+Bashcd frontend
 npm install
-npm start
+npm run dev    # (or npm start if using Create React App)
+Frontend URL: http://localhost:5173 (Vite) or http://localhost:3000
 
-
-Frontend runs at:
-👉 http://localhost:3000
-
-🔗 API Endpoints (Summary)
+🔗 API Endpoints
 Items
 
-GET /api/items/ – Fetch all items
-
-POST /api/items/ – Add new movie or TV show
-
-PUT /api/items/{id}/ – Update item
-
-DELETE /api/items/{id}/ – Delete item
+GET    /api/items/              → List all items
+POST   /api/items/              → Add new item
+GET    /api/items/<id>/         → Get single item
+PUT    /api/items/<id>/         → Update item
+DELETE /api/items/<id>/         → Delete item
 
 Recommendations
 
-GET /api/recommendations/ – Get suggested movies/shows
+GET    /api/recommendations/    → Get personalized suggestions
+
 
 🧠 Recommendation Logic (How It Works)
 
-Backend fetches all completed items with ratings
+Fetch all completed items with ratings
+Calculate average rating per genre
+Identify the highest-rated genre
+Recommend up to 5 unwatched items from that genre
 
-Calculates total rating score per genre
+Why rule-based?
 
-Identifies the most liked genre
+Lightning fast
+Fully transparent & debuggable
+No dependency on external ML services
+Easy to extend in the future
 
-Recommends:
 
-Items of that genre
+🔮 Future Enhancements
 
-Excludes already completed content
+User authentication & multi-profile support
+Integration with TMDB/IMDb for auto-fill (posters, summaries)
+Advanced recommendations (collaborative filtering)
+Watch history timeline
+Export/import collection (JSON/CSV)
+PWA support for offline use
 
-This keeps recommendations:
-
-Simple
-
-Explainable
-
-Fast
 
 👤 Author
-
 Abhishek FC
 Full Stack Developer
+Built with passion for clean code, great UX, and cinematic experiences 🍿
